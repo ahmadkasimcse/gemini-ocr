@@ -20,15 +20,34 @@ if not API_KEY:
 # --- OCR and Capture Functions (No changes here) ---
 
 def capture_screen_region():
-    # This function remains the same as before
+    """
+    Creates a transparent overlay across ALL monitors to let the user select a region.
+    Returns the file path of the captured screenshot.
+    """
     print("Waiting for screen region selection...")
+
+    # --- NEW: Multi-monitor dimension calculation ---
+    with mss() as sct:
+        # Get the dimensions of the entire virtual screen (all monitors combined)
+        virtual_screen = sct.monitors[0]
+        left = virtual_screen['left']
+        top = virtual_screen['top']
+        width = virtual_screen['width']
+        height = virtual_screen['height']
+
+    # Create a transparent, borderless window
     root = tk.Tk()
+    root.overrideredirect(True) # Borderless window
     root.attributes("-alpha", 0.3)
-    root.attributes("-fullscreen", True)
     root.attributes("-topmost", True)
-    root.wait_visibility(root)
+    
+    # --- CHANGE: Manually set geometry to span all monitors ---
+    # Instead of fullscreen, we set the exact geometry to cover the virtual screen.
+    root.geometry(f"{width}x{height}+{left}+{top}")
+    
     canvas = tk.Canvas(root, cursor="cross", bg="grey")
     canvas.pack(fill="both", expand=True)
+
     start_x, start_y = 0, 0
     rect = None
     screenshot_path = "temp_screenshot.png"
