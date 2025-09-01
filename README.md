@@ -13,7 +13,7 @@ A simple Python script that uses Google's Gemini API to perform high-accuracy Op
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/ahmadkasimcse/gemini-ocr.git](https://github.com/ahmadkasimcse/gemini-ocr.git)
+    git clone https://github.com/ahmadkasimcse/gemini-ocr.git
     cd your-repo-name
     ```
 
